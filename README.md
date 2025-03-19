@@ -1,0 +1,2 @@
+# generator_prompt_webwriting
+ウェブライティングのためのプロンプトを生成するツール
