@@ -3,21 +3,15 @@
 */
 
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-
-import { PromptSeed } from '../contents/ContentBase';
-
-
 
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
-    handleSetSeed?: (seed: PromptSeed) => void;
 }
 export default function TabPanel(props: TabPanelProps) {
-    const { children, value, index, handleSetSeed, ...other } = props;
+    const { children, value, index, ...other } = props;
 
     return (
         <div
@@ -29,7 +23,7 @@ export default function TabPanel(props: TabPanelProps) {
         >
             {value === index && (
                 <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                    {children}
                 </Box>
             )}
         </div>
