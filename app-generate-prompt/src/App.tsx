@@ -28,19 +28,55 @@ function a11yProps(index: number) {
 
 function App() {
     const [value, setValue] = useState(0);
-    const [seeds, setSeeds] = useState<PromptSeed[]>([]);
+    const [seeds, setSeeds] = useState<PromptSeed[]>([{title: "Prompt", content: ""}]);
 
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 
-    const handleSetSeed = (seed: PromptSeed) => {
-        // 同じタイトルのものがあれば削除
-        const newSeeds = seeds.filter(s => s.title !== seed.title);
+    const handleSetSeed = (curSeed: PromptSeed) => {
+        // 同じタイトルのものがあったら更新し、なかったら追加する
+        let newSeeds: PromptSeed[] = seeds.map(s => s.title === curSeed.title ? curSeed : s);
+        if (newSeeds.find(s => s.title === curSeed.title) === undefined) {
+            newSeeds.push(curSeed);
+        }
 
-        // 新しいものを追加
-        newSeeds.push(seed);
+        //const newSeeds = seeds.filter(s => s.title !== curSeed.title);
+        //
+        //// 同じタイトルのものがあれば、それを更新する
+        //let newSeeds: PromptSeed[] = seeds.map(s => s.title === curSeed.title ? curSeed : s);
+
+        
+        //
+        //// 新しいものを追加
+        //newSeeds.push(seed);
+        //setSeeds(newSeeds);
+
+        // Prompt以外が更新された場合は、Promptも更新する
+        if (curSeed.title !== "Prompt") {
+            // Prompt以外のSeedsを取得
+            const notPromptSeeds: PromptSeed[] = newSeeds.filter(s => s.title !== "Prompt");
+
+            // Prompt以外のSeedsから、Promptのcontentを作成
+            const promptContent: string = notPromptSeeds.reduce(
+                (content: string, curSeed: PromptSeed) => {
+                    let retContent = content;
+                    if (retContent.length > 0) {
+                        retContent += "\n\n";
+                    }
+                    retContent += `# ${curSeed.title}\n${curSeed.content}`;
+                    return retContent;
+                },
+                ""
+            );
+
+            newSeeds = newSeeds.map(
+                (s: PromptSeed) =>
+                    (s.title === "Prompt") ? {title: "Prompt", content: promptContent} : s
+            );
+        }
         setSeeds(newSeeds);
+        console.log(newSeeds);
     }
 
     const hasSeed = (title: string) => {
