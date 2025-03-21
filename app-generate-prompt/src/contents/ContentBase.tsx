@@ -22,15 +22,17 @@ export default function ContentBase(
         handleSetSeed: (seed: PromptSeed) => void;
         contentTitle: string;
         contentDescription: string;
+        defaultSeedContent: string;
     }
 ) {
-    const {handleSetSeed, contentTitle, contentDescription} = props;
-    const [content, setContent] = useState("");
+    const {handleSetSeed, contentTitle, contentDescription, defaultSeedContent} = props;
+    const [content, setContent] = useState(defaultSeedContent);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
 
 
     // 最初に、contentTitleに紐づくテキストを取得し、candidatesに格納する
     useEffect(() => {
+        // seedContentがなければ、contentTitleに紐づくテキストを取得し、candidatesに格納する
         const fetchMemorizedTexts = async () => {
             try {
                 const texts: Candidate[] = await getMemorizedTexts(contentTitle);

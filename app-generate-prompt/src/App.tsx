@@ -81,13 +81,13 @@ function App() {
                         label="PROMPT"
                         {...a11yProps(1)}
                     />
-
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <ContentBase
                         contentTitle="Assumption"
                         contentDescription="前提となる内容を記入してください。"
                         handleSetSeed={handleSetSeed}
+                        defaultSeedContent={seeds.find(s => s.title === "Assumption")?.content || ""}
                     />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
@@ -95,6 +95,7 @@ function App() {
                         contentTitle="Prompt"
                         contentDescription="前提となる内容を記入してください。"
                         handleSetSeed={handleSetSeed}
+                        defaultSeedContent={seeds.find(s => s.title === "Prompt")?.content || ""}
                     />
                 </TabPanel>
             </Box>
