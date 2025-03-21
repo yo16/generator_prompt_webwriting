@@ -9,12 +9,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import { getMemorizedTexts } from "../lib/getMemorizedTexts";
+import { Candidate } from "../lib/getMemorizedTexts";
 
 export interface PromptSeed {
-    title: string;
-    content: string;
-}
-interface Candidate {
     title: string;
     content: string;
 }
@@ -68,14 +65,16 @@ export default function ContentBase(
             <Box
                 sx={{
                     display: 'flex',
-                    flexDirection: 'column'
+                    flexDirection: 'column',
+                    gap: '10px',
                 }}
             >
                 {contentDescription}
                 <Box
                     sx={{
                         display: 'flex',
-                        flexDirection: 'row'
+                        flexDirection: 'row',
+                        gap: '10px',
                     }}
                 >
                     <TextField

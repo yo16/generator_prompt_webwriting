@@ -29,7 +29,7 @@ app.get("/memorizedTexts/:contentTitle", (req, res) => {
     // dataフォルダにあるjsonfileを読み込む
     const filePath = `${DATA_FOLDER_PATH}/${contentTitle}.json`;
     if (!fs.existsSync(filePath)) {
-        res.status(404).json({ error: `File not found: ${filePath}` });
+        res.json({ texts: [] });
         return;
     }
     const file = fs.readFileSync(filePath, "utf8");
