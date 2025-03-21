@@ -35,7 +35,16 @@ app.get("/memorizedTexts/:contentTitle", (req, res) => {
     const file = fs.readFileSync(filePath, "utf8");
     const data = JSON.parse(file);
 
-    res.json({ texts: data.texts });
+    const retTexts = [];
+    for (const text of data.texts) {
+        // contentが配列の場合は、"\n"で結合して１つの文字列にする
+        if (Array.isArray(text.content)) {
+            text.content = text.content.join("\n");
+        }
+        retTexts.push(text);
+    }
+
+    res.json({ texts: retTexts });
 });
 
 // POSTリクエストの例
