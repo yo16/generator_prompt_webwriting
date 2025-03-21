@@ -45,6 +45,7 @@ export default function ContentBase(
         fetchMemorizedTexts();
     }, [contentTitle]);
 
+    // 入力ボックスの内容を変更する
     const handleOnChange = (value: string) => {
         setContent(value);
         handleSetSeed({
@@ -53,12 +54,12 @@ export default function ContentBase(
         });
     };
 
+    // 候補の内容をクリックしたときの処理
     const handleOnClickCandidate = (content: string) => {
-        setContent(content);
-        handleSetSeed({
-            title: contentTitle,
-            content: content
-        });
+        // 既存の項目の最後に追加する
+        const newContent = content + "\n\n" + content;
+
+        handleOnChange(newContent);
     };
 
     return (
@@ -107,6 +108,12 @@ export default function ContentBase(
                         ))}
                     </Box>
                 </Box>
+                <Button
+                    variant="outlined"
+                    onClick={() => handleOnChange("")}
+                >
+                    クリア
+                </Button>
             </Box>
         </div>
     )
