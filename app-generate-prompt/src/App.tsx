@@ -11,7 +11,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import SubjectIcon from '@mui/icons-material/Subject';
 
 import TabPanel from "./components/TabPanel";
-import ContentBase, { PromptSeed } from "./contents/ContentBase";
+import { ContentBase, PromptSeed } from "./contents/ContentBase";
 
 import "./App.css";
 

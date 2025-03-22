@@ -10,23 +10,22 @@ import Button from '@mui/material/Button';
 
 import { getMemorizedTexts } from "../lib/getMemorizedTexts";
 import { Candidate } from "../lib/getMemorizedTexts";
+import { MarkdownBox } from "./MarkdownBox";
 
 export interface PromptSeed {
     title: string;
     content: string;
 }
 
-
-export default function ContentBase(
-    props: {
-        handleSetSeed: (seed: PromptSeed) => void;
-        contentTitle: string;
-        contentDescription: string;
-        defaultSeedContent: string;
-        showClearButton?: boolean;
-    }
-) {
-    const {handleSetSeed, contentTitle, contentDescription, defaultSeedContent, showClearButton = true} = props;
+interface ContentBaseProps {
+    handleSetSeed: (seed: PromptSeed) => void;
+    contentTitle: string;
+    contentDescription: string;
+    defaultSeedContent: string;
+    showClearButton?: boolean;
+}
+export const ContentBase: React.FC<ContentBaseProps> = (props) => {
+    const {handleSetSeed, contentTitle, defaultSeedContent, showClearButton = true} = props;
     const [content, setContent] = useState(defaultSeedContent);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
 
@@ -117,6 +116,12 @@ export default function ContentBase(
                         クリア
                     </Button>
                 )}
+                <MarkdownBox
+                    markdownText={content}
+                    sx={{
+                        width: '500px',
+                    }}
+                />
             </Box>
         </div>
     )

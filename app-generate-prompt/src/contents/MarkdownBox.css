@@ -1,0 +1,21 @@
+/*
+MarkdownBox.css
+MarkdownBoxのスタイル
+*/
+
+.markdown-box h1 {
+    background-color: rgb(255, 32, 32);
+}
+.markdown-box h2 {
+    background-color: #eeeb5a;
+}
+.markdown-box h3 {
+    background-color: #6c7ee6;
+}
+.markdown-box h4 {
+    background-color: #b47575;
+}
+.markdown-box h5 {
+    background-color: #c0bf67;
+}
+
