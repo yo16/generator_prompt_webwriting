@@ -16,7 +16,11 @@ import ContentBase, { PromptSeed } from "./contents/ContentBase";
 import "./App.css";
 
 
-
+interface ContentTitle {
+    title: string;
+    introduction: string;
+    showClearButton?: boolean;
+}
 
 function a11yProps(index: number) {
     return {
@@ -25,10 +29,47 @@ function a11yProps(index: number) {
     };
 }
 
+const PROMPT_TITLE = "プロンプト";
 
 function App() {
     const [value, setValue] = useState(0);
-    const [seeds, setSeeds] = useState<PromptSeed[]>([{title: "Prompt", content: ""}]);
+    const [seeds, setSeeds] = useState<PromptSeed[]>([{title: PROMPT_TITLE, content: ""}]);
+
+    const [contentsFrame] = useState<ContentTitle[]>([
+        {
+            title: "前提",
+            introduction: "前提となる内容を記入してください。"
+        },
+        {
+            title: "依頼内容",
+            introduction: "依頼内容を記入してください。"
+        },
+        {
+            title: "最終ゴール",
+            introduction: "最終ゴールを記入してください。"
+        },
+        {
+            title: "ターゲット",
+            introduction: "ターゲットを記入してください。"
+        },
+        {
+            title: "ジャンル",
+            introduction: "ジャンルを記入してください。"
+        },
+        {
+            title: "コンテンツ内容",
+            introduction: "コンテンツ内容を記入してください。"
+        },
+        {
+            title: "文章フレームワーク",
+            introduction: "文章フレームワークを記入してください。"
+        },
+        {
+            title: PROMPT_TITLE,
+            introduction: "データ活用を記入してください。",
+            showClearButton: false
+        }
+    ])
 
     const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -41,21 +82,10 @@ function App() {
             newSeeds.push(curSeed);
         }
 
-        //const newSeeds = seeds.filter(s => s.title !== curSeed.title);
-        //
-        //// 同じタイトルのものがあれば、それを更新する
-        //let newSeeds: PromptSeed[] = seeds.map(s => s.title === curSeed.title ? curSeed : s);
-
-        
-        //
-        //// 新しいものを追加
-        //newSeeds.push(seed);
-        //setSeeds(newSeeds);
-
         // Prompt以外が更新された場合は、Promptも更新する
-        if (curSeed.title !== "Prompt") {
+        if (curSeed.title !== PROMPT_TITLE) {
             // Prompt以外のSeedsを取得
-            const notPromptSeeds: PromptSeed[] = newSeeds.filter(s => s.title !== "Prompt");
+            const notPromptSeeds: PromptSeed[] = newSeeds.filter(s => s.title !== PROMPT_TITLE);
 
             // Prompt以外のSeedsから、Promptのcontentを作成
             const promptContent: string = notPromptSeeds.reduce(
@@ -72,13 +102,13 @@ function App() {
 
             newSeeds = newSeeds.map(
                 (s: PromptSeed) =>
-                    (s.title === "Prompt") ? {title: "Prompt", content: promptContent} : s
+                    (s.title === PROMPT_TITLE) ? {title: PROMPT_TITLE, content: promptContent} : s
             );
         }
         setSeeds(newSeeds);
-        console.log(newSeeds);
     }
 
+    // Seedに内容があるかどうかを確認する
     const hasSeed = (title: string) => {
         return seeds.filter(
             seed => (seed.title === title) && (seed.content.length > 0)
@@ -92,7 +122,7 @@ function App() {
                     flexGrow: 1,
                     bgcolor: 'background.paper',
                     display: 'flex',
-                    height: 224,
+                    height: '100%',
                 }}
             >
                 <Tabs
@@ -103,37 +133,34 @@ function App() {
                     aria-label="basic tabs example"
                     sx={{ borderRight: 1, borderColor: 'divider' }}
                 >
-                    <Tab
-                        icon={
-                            hasSeed("Assumption")
-                                ? <CheckBoxIcon sx={{ color: "green" }} />
-                                : <CheckBoxOutlineBlankIcon />
-                        }
-                        label="ASMP"
-                        {...a11yProps(0)}
-                    />
-                    <Tab
-                        icon={<SubjectIcon />}
-                        label="PROMPT"
-                        {...a11yProps(1)}
-                    />
+                    {contentsFrame.map((content, index) => (
+                        <Tab
+                            icon={
+                                (content.title === PROMPT_TITLE)
+                                    ? <SubjectIcon />
+                                    : (hasSeed(content.title)
+                                        ? <CheckBoxIcon sx={{ color: "green" }} />
+                                        : <CheckBoxOutlineBlankIcon />
+                                    )
+                            }
+                            label={content.title}
+                            {...a11yProps(index)}
+                        />
+                        ))
+                    }
                 </Tabs>
-                <TabPanel value={value} index={0}>
-                    <ContentBase
-                        contentTitle="Assumption"
-                        contentDescription="前提となる内容を記入してください。"
-                        handleSetSeed={handleSetSeed}
-                        defaultSeedContent={seeds.find(s => s.title === "Assumption")?.content || ""}
-                    />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <ContentBase
-                        contentTitle="Prompt"
-                        contentDescription="前提となる内容を記入してください。"
-                        handleSetSeed={handleSetSeed}
-                        defaultSeedContent={seeds.find(s => s.title === "Prompt")?.content || ""}
-                    />
-                </TabPanel>
+                {contentsFrame.map((content, index) => (
+                    <TabPanel value={value} index={index}>
+                        <ContentBase
+                            contentTitle={content.title}
+                            contentDescription={content.introduction}
+                            handleSetSeed={handleSetSeed}
+                            defaultSeedContent={seeds.find(s => s.title === content.title)?.content || ""}
+                            showClearButton={content.showClearButton}
+                        />
+                    </TabPanel>
+                ))}
+
             </Box>
         </>
     )

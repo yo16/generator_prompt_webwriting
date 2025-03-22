@@ -23,9 +23,10 @@ export default function ContentBase(
         contentTitle: string;
         contentDescription: string;
         defaultSeedContent: string;
+        showClearButton?: boolean;
     }
 ) {
-    const {handleSetSeed, contentTitle, contentDescription, defaultSeedContent} = props;
+    const {handleSetSeed, contentTitle, contentDescription, defaultSeedContent, showClearButton = true} = props;
     const [content, setContent] = useState(defaultSeedContent);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
 
@@ -55,9 +56,9 @@ export default function ContentBase(
     };
 
     // 候補の内容をクリックしたときの処理
-    const handleOnClickCandidate = (content: string) => {
+    const handleOnClickCandidate = (curContent: string) => {
         // 既存の項目の最後に追加する
-        const newContent = content + "\n\n" + content;
+        const newContent = (content.length > 0) ? (content + "\n\n" + curContent) : curContent;
 
         handleOnChange(newContent);
     };
@@ -72,7 +73,7 @@ export default function ContentBase(
                     gap: '10px',
                 }}
             >
-                {contentDescription}
+                {/* contentDescription */}
                 <Box
                     sx={{
                         display: 'flex',
@@ -108,12 +109,14 @@ export default function ContentBase(
                         ))}
                     </Box>
                 </Box>
-                <Button
-                    variant="outlined"
-                    onClick={() => handleOnChange("")}
-                >
-                    クリア
-                </Button>
+                {showClearButton && (
+                    <Button
+                        variant="outlined"
+                        onClick={() => handleOnChange("")}
+                    >
+                        クリア
+                    </Button>
+                )}
             </Box>
         </div>
     )
