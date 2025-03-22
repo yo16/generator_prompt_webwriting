@@ -87,6 +87,11 @@ function App() {
             // Prompt以外のSeedsを取得
             const notPromptSeeds: PromptSeed[] = newSeeds.filter(s => s.title !== PROMPT_TITLE);
 
+            // notPromptSeedsの並びを、contentsFrameのtitleの並び順と同じにする
+            notPromptSeeds.sort((a, b) => {
+                return contentsFrame.findIndex(c => c.title === a.title) - contentsFrame.findIndex(c => c.title === b.title);
+            });
+
             // Prompt以外のSeedsから、Promptのcontentを作成
             const promptContent: string = notPromptSeeds.reduce(
                 (content: string, curSeed: PromptSeed) => {
