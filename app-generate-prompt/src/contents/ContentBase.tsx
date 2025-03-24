@@ -23,9 +23,10 @@ interface ContentBaseProps {
     contentDescription: string;
     defaultSeedContent: string;
     showClearButton?: boolean;
+    showCopyButton?: boolean;
 }
 export const ContentBase: React.FC<ContentBaseProps> = (props) => {
-    const {handleSetSeed, contentTitle, defaultSeedContent, showClearButton = true} = props;
+    const {handleSetSeed, contentTitle, defaultSeedContent, showClearButton = true, showCopyButton = false} = props;
     const [content, setContent] = useState(defaultSeedContent);
     const [candidates, setCandidates] = useState<Candidate[]>([]);
 
@@ -60,6 +61,11 @@ export const ContentBase: React.FC<ContentBaseProps> = (props) => {
         const newContent = (content.length > 0) ? (content + "\n\n" + curContent) : curContent;
 
         handleOnChange(newContent);
+    };
+
+    // コピーボタンをクリックしたときの処理
+    const handleOnClickCopy = () => {
+        navigator.clipboard.writeText(content);
     };
 
     return (
@@ -114,6 +120,14 @@ export const ContentBase: React.FC<ContentBaseProps> = (props) => {
                         onClick={() => handleOnChange("")}
                     >
                         クリア
+                    </Button>
+                )}
+                {showCopyButton && (
+                    <Button
+                        variant="outlined"
+                        onClick={() => handleOnClickCopy()}
+                    >
+                        コピー
                     </Button>
                 )}
                 <MarkdownBox

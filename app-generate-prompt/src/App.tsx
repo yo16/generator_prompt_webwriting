@@ -20,6 +20,7 @@ interface ContentTitle {
     title: string;
     introduction: string;
     showClearButton?: boolean;
+    showCopyButton?: boolean;
 }
 
 function a11yProps(index: number) {
@@ -67,7 +68,8 @@ function App() {
         {
             title: PROMPT_TITLE,
             introduction: "データ活用を記入してください。",
-            showClearButton: false
+            showClearButton: false,
+            showCopyButton: true
         }
     ])
 
@@ -162,6 +164,7 @@ function App() {
                             handleSetSeed={handleSetSeed}
                             defaultSeedContent={seeds.find(s => s.title === content.title)?.content || ""}
                             showClearButton={content.showClearButton}
+                            showCopyButton={content.showCopyButton}
                         />
                     </TabPanel>
                 ))}
